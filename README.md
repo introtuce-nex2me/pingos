@@ -5,77 +5,78 @@
 [![website](https://img.shields.io/badge/website-https://pingos.io-red.svg)](https://pingos.io) [![Build Status](https://travis-ci.com/pingostack/pingos.svg?branch=master)](https://travis-ci.com/pingostack/pingos) [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
 
-> [PingOS](https://pingos.io/docs/zh/quick-start)依赖[NGINX](https://github.com/nginx/nginx)构建，并且继承[arut](https://github.com/arut/nginx-rtmp-module)和[AlexWoo](https://github.com/AlexWoo/nginx-rtmp-module)的nginx-rtmp-module模块。修复arut和AlexWoo版本存在的部分问题外，PingOS在编码和直播协议以及其他方面做了多项功能扩展。
+ > [PingOS](https://pingos.io/docs/zh/quick-start) dependent [NGINX](https://github.com/nginx/nginx) constructed and inherits [arut](https://github.com/arut/nginx-rtmp-module) and [AlexWoo](https://github.com/AlexWoo/nginx-rtmp-module) of nginx-rtmp-module module. In addition to fixing some of the problems in the arut and AlexWoo versions, PingOS has made several functional extensions in encoding and live broadcast protocols and other aspects.
+
 
 ---
 
-# 服务器功能
+# Server function
 
-- [x] **直播协议：** RTMP、HTTP(S)-FLV、HTTP(S)-TS、HLS（支持HTTPS）、HLS+（支持HTTPS）、DASH（支持HTTPS）。
-- [x] **音视频编码：** H264、H265、MP3、AAC。
-- [x] **直播录像：** FLV文件格式和TS文件格式。
-- [x] **GOP缓存：** 实现秒开和内存复用。
-- [x] **application支持通配符：** “ * ”号通配符实现自动匹配推拉流时使用的application名字，无需累赘的配置。
-- [x] **VHOST功能：** 支持配置多个server域名。
-- [x] **控制台接口：** 通过HTTP API接口控制推流、拉流以及录像过程。
-- [x] **配置动态加载：** 修改配置文件后无需对nginx做任何操作就可读取最新配置。
-- [x] **流量计费：** 通过配置自定义流量日志。
-- [x] **变量参数配置：** 配置文件中使用变量。
-- [x] **进程间回源：** 进程间相互拉流，解决了原生nginx-rtmp-module模块多进程拉流失败的问题。
-- [x] **集群化功能：** 服务器间推拉流功能（http-flv、rtmp协议）。
-- [x] **html5网页播放器：** [pingos-player](https://github.com/pingostack/pingos-player)播放器将持续兼容各浏览器平台，以及多种直播协议。
+- [x] **Live broadcast protocol:** RTMP, HTTP (S) -FLV, HTTP (S) -TS, HLS (support HTTPS), HLS + (support HTTPS), DASH (support HTTPS).
+- [x] **Audio and video coding:**  H264, H265, MP3, AAC.
+- [x] **Live video:** FLV file format and TS file format.
+- [x] **GOP cache: to** achieve second open and memory reuse.
+- [x] **Application supports wildcards:**  wildcards can automatically match the application name used in the push-pull flow, without cumbersome configuration.
+- [x] **VHOST function:** support to configure multiple server domain names.
+- [x] **Console interface:** Control the push, pull, and recording processes through the HTTP API interface.
+- [x] **Configuration dynamic loading: After** modifying the configuration file, the latest configuration can be read without any operation on nginx.
+- [x] **Flow accounting:** By configuring custom flow logs.
+- [x] **Variable parameter configuration:** Variables are used in the configuration file.
+- [x] **Back-to-source** between processes : Pulling flows between processes solves the problem that the native nginx-rtmp-module module fails to pull flows in multiple processes.
+- [x] **Clustering function:** push-pull streaming function between servers (http-flv, rtmp protocol).
+- [x] **html5 web player: The** [pingos-player](https://github.com/pingostack/pingos-player)player will continue to be compatible with various browser platforms and multiple live broadcast protocols.
 
-# 引导
+# Guide
 
-- [项目文档](https://pingos.io/docs/zh/quick-start)
+- [Project documentation](https://pingos.io/docs/zh/quick-start)
 
-## 快速安装
+## Quick installation
 
-- [使用Docker镜像](docker/README.md)
+- [Use Docker image](docker/README.md)
 
-- 直接安装到系统
+- Install directly into the system
     ```bash
-    # 快速安装
+   # Quick Installation
     git clone https://github.com/pingostack/pingos.git
 
     cd pingos
 
     ./release.sh -i
 
-    # 启动服务
+   
+    # Start the service 
     cd /usr/local/pingos/
     ./sbin/nginx
     ```
 
-## 操作说明
+## Instructions
 
-### 推流
+### Push flow
 
-推流地址：rtmp://ip/live/流名
+Push stream address: rtmp://ip/live/stream_name
 
-### 播放地址
+### Play address
 
-- rtmp 播放：rtmp://ip/live/流名
+- rtmp playback: rtmp://ip/live/stream_name
 
-- http(s)-flv 播放：http(s)://ip/flv/流名
+- http (s) -flv playback: http (s)://ip/flv/stream name
 
-- hls 播放：http(s)://ip/hls/流名.m3u8
+- hls play: http (s)://ip/hls/stream_name.m3u8
 
-- hls+ 播放：http(s)://ip/hls2/流名.m3u8
+- hls + play:http (s)://ip/hls2/ stream_name.m3u8
+- http (s) -ts play: http (s)://ip/ts/stream_name
 
-- http(s)-ts 播放：http(s)://ip/ts/流名
+### Live stream monitoring background
 
-### 直播流监控后台
+> Access address: http://ip/rtmp_stat Through this page, you can view the current push and playback records.
 
-> 访问地址：http://ip/rtmp_stat
-> 通过该页面可以查看当前正在发生的推流和播放记录。
+> html5 player
 
 
-### html5播放器
+### html5 player
 
-> 访问地址： http://ip/h5player/flv
-> 这个播放器是基于flv.js的网页播放器，可以实现无插件播放http-flv直播流。
-> 一旦你能够访问这个页面，说明你的直播服务器已经成功搭建起来了。
+> Access address: http://ip/h5player/flv This player is a web-based player based on flv.js, which can implement http-flv live streaming without plug-ins. Once you can access this page, it means that your live broadcast server has been successfully set up.
+
 
 ![h5player](doc/img/flvplayer.png)
 <div class="article__content" markdown="1">
